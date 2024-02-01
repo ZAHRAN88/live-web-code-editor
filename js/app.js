@@ -1,37 +1,43 @@
-document.getElementById("htmlCode").value="<div>\n\n</div>";
-document.getElementById("cssCode").value="<style>\n\n</style>";
-document.getElementById("jsCode").value="<script>\n\n</script>";
-
-function showPreview(){
+window.onload = function() {
+    const htmlCode = document.getElementById('htmlCode');
+    const cssCode = document.getElementById('cssCode');
+    const jsCode = document.getElementById('jsCode');
+    
+    /* ==================================== Load code from localStorage if available  ============================================== */
+    const savedHtmlCode = localStorage.getItem('savedHtmlCode');
+    const savedCssCode = localStorage.getItem('savedCssCode');
+    const savedJsCode = localStorage.getItem('savedJsCode');
+    if (savedHtmlCode) {
+      htmlCode.value = savedHtmlCode;
+    }
+    if (savedCssCode) {
+      cssCode.value = savedCssCode;
+    }
+    if (savedJsCode) {
+      jsCode.value = savedJsCode;
+    }
+    
+    /*=============================== Save code to localStorage on change  =====================================  */ 
+    htmlCode.addEventListener('input', saveCode);
+    cssCode.addEventListener('input', saveCode);
+    jsCode.addEventListener('input', saveCode);
+    
+    function saveCode() {
+      localStorage.setItem('savedHtmlCode', htmlCode.value);
+      localStorage.setItem('savedCssCode', cssCode.value);
+      localStorage.setItem('savedJsCode', jsCode.value);
+    }
+    
+    /* ====================================  Run code  ============================================== */    
+    showPreview();
+  }
+  
+  function showPreview(){
     var htmlCode = document.getElementById("htmlCode").value;
-    var cssCode = ""+document.getElementById("cssCode").value+"";
-    var jsCode = ""+document.getElementById("jsCode").value+"";
+    var cssCode = "<style>" + document.getElementById("cssCode").value + "</style>";
+    var jsCode = "<script>" + document.getElementById("jsCode").value + "</script>";
     var frame = document.getElementById("preview-window").contentWindow.document;
     frame.open();
-    frame.write(htmlCode+cssCode+jsCode);
+    frame.write(htmlCode + cssCode + jsCode);
     frame.close();
-}
-
-function show(x){
-    document.getElementById("html").style.display="none";
-    document.getElementById("css").style.display="none";
-    document.getElementById("js").style.display="none";
-    document.getElementById("result").style.display="none";
-    document.getElementById(x).style.display="block";
-}
-
-function show_all(){
-    if(window.innerWidth>=992)
-    {
-        document.getElementById("html").style.display="block";
-        document.getElementById("css").style.display="block";
-        document.getElementById("js").style.display="block";
-        document.getElementById("result").style.display="block";
-    }
-    if(window.innerWidth<992 && document.getElementById("html").style.display=="block")
-    {
-        document.getElementById("css").style.display="none";
-        document.getElementById("js").style.display="none";
-        document.getElementById("result").style.display="none";
-    }
-}
+  }
